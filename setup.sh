@@ -31,7 +31,7 @@ source ~/.vim_runtime/vimrcs/extended.vim
 try
 source ~/.vim_runtime/my_configs.vim
 catch
-endtry' >> ~/.vimrc
+endtry' > ~/.vimrc
 
 git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim_runtime/bundle/Vundle.vim
 echo "正在努力为您安装bundle程序" > tmp

@@ -1,6 +1,6 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Important:
-"       This requries that you install https://github.com/amix/vimrc !
+"       This requries that you install https://github.com/jiangty08/vim !
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -8,9 +8,56 @@
 """"""""""""""""""""""""""""""
 " => Load pathogen paths
 """"""""""""""""""""""""""""""
-call pathogen#infect('~/.vim_runtime/sources_forked/{}')
-call pathogen#infect('~/.vim_runtime/sources_non_forked/{}')
+call pathogen#infect('~/.vim_runtime/bundle/{}')
+"call pathogen#infect('~/.vim_runtime/sources_non_forked/{}')
 call pathogen#helptags()
+
+""""""""""""""""""""""""""""""
+" => Vundle Plugin
+""""""""""""""""""""""""""""""
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+" call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+call vundle#begin('~/.vim_runtime/bundle')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+" The following are examples of different formats supported.
+" Keep Plugin commands between vundle#begin/end.
+" plugin on GitHub repo
+Plugin 'tpope/vim-fugitive'
+" plugin from http://vim-scripts.org/vim/scripts.html
+Plugin 'L9'
+" Git plugin not hosted on GitHub
+Plugin 'git://git.wincent.com/command-t.git'
+" git repos on your local machine (i.e. when working on your own plugin)
+Plugin 'file:///home/gmarik/path/to/plugin'
+" The sparkup vim script is in a subdirectory of this repo called vim.
+" Pass the path to set the runtimepath properly.
+Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" Install L9 and avoid a Naming conflict if you've already installed a
+" different version somewhere else.
+Plugin 'ascenator/L9', {'name': 'newL9'}
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
 
 """"""""""""""""""""""""""""""
 " => bufExplorer plugin
@@ -41,7 +88,7 @@ nmap <c-P> <Plug>yankstack_substitute_newer_paste
 """"""""""""""""""""""""""""""
 let g:ctrlp_working_path_mode = 0
 
-let g:ctrlp_map = '<c-f>'
+"let g:ctrlp_map = '<c-f>'
 map <leader>j :CtrlP<cr>
 map <c-b> :CtrlPBuffer<cr>
 
@@ -167,3 +214,43 @@ nnoremap <silent> <leader>c :call SyntasticCheckCoffeescript()<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:gitgutter_enabled=0
 nnoremap <silent> <leader>d :GitGutterToggle<cr>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => tagbar (show tags)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <silent> <F8> :TagbarToggle<CR>                                                                        
+let g:tagbar_right = 1
+let g:tagbar_width = 45
+"autocmd VimEnter * nested :call tagbar#autoopen(1)
+autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx call tagbar#autoopen()
+
+if filereadable("cscope.out")
+        cs add cscope.out  
+endif
+
+set tags=tags;
+
+" auto load ctag and cscope from parent dirs recursively
+function! AutoLoadCTagsAndCScope()
+    let max = 8
+    let dir = './'
+    let i = 0
+    let break = 0
+    while isdirectory(dir) && i < max
+        if filereadable(dir . 'cscope.out') 
+            execute 'cs add ' . dir . 'cscope.out'
+            let break = 1
+        endif
+        if filereadable(dir . 'tags')
+            execute 'set tags =' . dir . 'tags'
+            let break = 1
+        endif
+        if break == 1
+            execute 'lcd ' . dir
+            break
+        endif
+        let dir = dir . '../'
+        let i = i + 1
+    endwhile
+endf
+nmap <F7> :call AutoLoadCTagsAndCScope()<CR>

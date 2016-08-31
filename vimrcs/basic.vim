@@ -62,13 +62,13 @@ nmap tt :%s/\t/    /g<CR>
 set so=7
 
 " Avoid garbled characters in Chinese language windows OS
-"let $LANG='en' 
-"set langmenu=en
+let $LANG='en' 
+set langmenu=en
 " 显示中文帮助
-if version >= 603
-	set helplang=cn
-    set langmenu=zh_CN.UTF-8
-endif
+"if version >= 603
+"	set helplang=cn
+"    set langmenu=zh_CN.UTF-8
+"endif
 source $VIMRUNTIME/delmenu.vim
 source $VIMRUNTIME/menu.vim
 
@@ -133,7 +133,9 @@ set tm=500
 " Add a bit extra margin to the left
 set foldcolumn=1
 
-
+set list
+" show tab as  |
+set listchars=tab:\|\ ,
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -354,6 +356,7 @@ map <leader>x :e ~/buffer.md<cr>
 
 " Toggle paste mode on and off
 map <leader>pp :setlocal paste!<cr>
+set pastetoggle=<F11>
 
 
 
