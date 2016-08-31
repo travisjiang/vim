@@ -29,6 +29,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'L9'
 Plugin 'FuzzyFinder'
 Plugin 'The-NERD-tree'
+Plugin 'cscope.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'kien/ctrlp.vim'
 Plugin 'easymotion/vim-easymotion'
@@ -134,6 +135,10 @@ let g:NERDTreeWinSize=35
 map <leader>nn :NERDTreeToggle<cr>
 map <leader>nb :NERDTreeFromBookmark
 map <leader>nf :NERDTreeFind<cr>
+"当打开vim且没有文件时自动打开NERDTree
+autocmd vimenter * if !argc() | NERDTree | endif
+" 只剩 NERDTree时自动关闭
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -231,11 +236,30 @@ let g:tagbar_width = 45
 "autocmd VimEnter * nested :call tagbar#autoopen(1)
 autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx call tagbar#autoopen()
 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => cscope(show calls and defines)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" s: Find this C symbol
+nnoremap  <leader>fs :call cscope#find('s', expand('<cword>'))<CR>
+" g: Find this definition
+nnoremap  <leader>fg :call cscope#find('g', expand('<cword>'))<CR>
+" d: Find functions called by this function
+nnoremap  <leader>fd :call cscope#find('d', expand('<cword>'))<CR>
+" c: Find functions calling this function
+nnoremap  <leader>fc :call cscope#find('c', expand('<cword>'))<CR>
+" t: Find this text string
+nnoremap  <leader>ft :call cscope#find('t', expand('<cword>'))<CR>
+" e: Find this egrep pattern
+nnoremap  <leader>fe :call cscope#find('e', expand('<cword>'))<CR>
+" f: Find this file
+nnoremap  <leader>ff :call cscope#find('f', expand('<cword>'))<CR>
+" i: Find files #including this file
+nnoremap  <leader>fi :call cscope#find('i', expand('<cword>'))<CR>
+
 if filereadable("cscope.out")
         cs add cscope.out  
 endif
-
-set tags=tags;
 
 " auto load ctag and cscope from parent dirs recursively
 function! AutoLoadCTagsAndCScope()
@@ -259,5 +283,6 @@ function! AutoLoadCTagsAndCScope()
         let dir = dir . '../'
         let i = i + 1
     endwhile
-endf
-nmap <F7> :call AutoLoadCTagsAndCScope()<CR>
+endfunction
+"this is not work, but cscope.vim will auto create and connect cscope
+"nmap <F7> :call AutoLoadCTagsAndCScope()<CR>

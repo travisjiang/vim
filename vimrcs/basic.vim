@@ -28,6 +28,8 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Sets how many lines of history VIM has to remember
 set history=500
+" show line number
+set number
 " 保存全局变量
 set viminfo+=!
 " 带有如下符号的单词不要被换行分割
@@ -46,7 +48,8 @@ let mapleader = ","
 let g:mapleader = ","
 
 " Fast saving
-nmap <leader>w :w!<cr>
+nmap <leader>w :wq!<cr>
+nmap <leader>q :q<cr>
 
 " :W sudo saves the file 
 " (useful for handling the permission-denied error)
@@ -74,8 +77,6 @@ source $VIMRUNTIME/menu.vim
 
 " 可以在buffer的任何地方使用鼠标（类似office中在工作区双击鼠标定位）
 set mouse=a
-set selection=exclusive
-set selectmode=mouse,key
 
 " Turn on the WiLd menu
 set wildmenu
@@ -349,7 +350,7 @@ map <leader>s? z=
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 " Quickly open a buffer for scribble
-map <leader>q :e ~/buffer<cr>
+"map <leader>q :e ~/buffer<cr>
 
 " Quickly open a markdown buffer for scribble
 map <leader>x :e ~/buffer.md<cr>
@@ -467,6 +468,38 @@ func SetTitle()
 	"新建文件后，自动定位到文件末尾
 endfunc 
 autocmd BufNewFile * normal G
+
+
+"代码格式优化化
+
+map <F6> :call FormartSrc()<CR><CR>
+
+"定义FormartSrc()
+func FormartSrc()
+    exec "w"
+    if &filetype == 'c'
+        exec "!astyle --style=ansi -a --suffix=none %"
+    elseif &filetype == 'cpp' || &filetype == 'hpp'
+        exec "r !astyle --style=ansi --one-line=keep-statements -a --suffix=none %> /dev/null 2>&1"
+    elseif &filetype == 'perl'
+        exec "!astyle --style=gnu --suffix=none %"
+    elseif &filetype == 'py'||&filetype == 'python'
+        exec "r !autopep8 -i --aggressive %"
+    elseif &filetype == 'java'
+        exec "!astyle --style=java --suffix=none %"
+    elseif &filetype == 'jsp'
+        exec "!astyle --style=gnu --suffix=none %"
+    elseif &filetype == 'xml'
+        exec "!astyle --style=gnu --suffix=none %"
+    else
+        exec "normal gg=G"
+        return
+    endif
+    exec "e! %"
+endfunc
+"结束定义FormartSrc
+
+
 
 
 " Make VIM remember position in file after reopen
