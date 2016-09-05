@@ -33,6 +33,8 @@ Plugin 'cscope.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'kien/ctrlp.vim'
 Plugin 'easymotion/vim-easymotion'
+Plugin 'tpope/vim-fugitive'
+Plugin 'Auto-Pairs'
 "Plugin 'Valloric/YouCompleteMe'
 
 "" The following are examples of different formats supported.
@@ -100,15 +102,10 @@ let g:ctrlp_working_path_mode = 0
 map <leader>j :CtrlP<cr>
 map <c-b> :CtrlPBuffer<cr>
 
+let g:ctrlp_max_depth = 10
+let g:ctrlp_max_files=0
 let g:ctrlp_max_height = 20
 let g:ctrlp_custom_ignore = 'node_modules\|^\.DS_Store\|^\.git\|^\.coffee'
-
-
-""""""""""""""""""""""""""""""
-" => ZenCoding
-""""""""""""""""""""""""""""""
-" Enable all functions in all modes
-let g:user_zen_mode='a'
 
 
 """"""""""""""""""""""""""""""
