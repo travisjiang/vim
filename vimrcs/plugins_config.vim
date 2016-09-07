@@ -29,13 +29,19 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'L9'
 Plugin 'FuzzyFinder'
 Plugin 'The-NERD-tree'
-Plugin 'cscope.vim'
+"Plugin 'cscope.vim'       cscope_macros.vim is better for csadd
+Plugin 'cscope_macros.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'kien/ctrlp.vim'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'tpope/vim-fugitive'
 Plugin 'Auto-Pairs'
-"Plugin 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
+" Track the engine.
+Plugin 'SirVer/ultisnips'
+
+" Snippets are separated from the engine. Add this if you want them:
+Plugin 'honza/vim-snippets'
 
 "" The following are examples of different formats supported.
 "" Keep Plugin commands between vundle#begin/end.
@@ -80,13 +86,6 @@ map <leader>o :BufExplorer<cr>
 
 
 """"""""""""""""""""""""""""""
-" => MRU plugin
-""""""""""""""""""""""""""""""
-let MRU_Max_Entries = 400
-map <leader>f :MRU<CR>
-
-
-""""""""""""""""""""""""""""""
 " => YankStack
 """"""""""""""""""""""""""""""
 nmap <c-p> <Plug>yankstack_substitute_older_paste
@@ -105,14 +104,8 @@ map <c-b> :CtrlPBuffer<cr>
 let g:ctrlp_max_depth = 10
 let g:ctrlp_max_files=0
 let g:ctrlp_max_height = 20
+let g:ctrlp_show_hidden = 1
 let g:ctrlp_custom_ignore = 'node_modules\|^\.DS_Store\|^\.git\|^\.coffee'
-
-
-""""""""""""""""""""""""""""""
-" => snipMate (beside <TAB> support <CTRL-j>)
-""""""""""""""""""""""""""""""
-ino <c-j> <c-r>=snipMate#TriggerSnippet()<cr>
-snor <c-j> <esc>i<right><c-r>=snipMate#TriggerSnippet()<cr>
 
 
 """"""""""""""""""""""""""""""
@@ -254,10 +247,6 @@ nnoremap  <leader>ff :call cscope#find('f', expand('<cword>'))<CR>
 " i: Find files #including this file
 nnoremap  <leader>fi :call cscope#find('i', expand('<cword>'))<CR>
 
-if filereadable("cscope.out")
-        cs add cscope.out  
-endif
-
 " auto load ctag and cscope from parent dirs recursively
 function! AutoLoadCTagsAndCScope()
     let max = 8
@@ -282,4 +271,25 @@ function! AutoLoadCTagsAndCScope()
     endwhile
 endfunction
 "this is not work, but cscope.vim will auto create and connect cscope
-"nmap <F7> :call AutoLoadCTagsAndCScope()<CR>
+nmap <F7> :call AutoLoadCTagsAndCScope()<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => YCM(YouCompleteMe: auto complete)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:ycm_global_ycm_extra_conf = '~/.vim_runtime/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_seed_identifiers_with_syntax = 1
+let g:ycm_confirm_extra_conf = 0
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => UltiSnips
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<Leader><tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsSnippetDirectories = ['~/.vim_runtime/ultisnips-snippets']

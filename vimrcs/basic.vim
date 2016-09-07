@@ -76,7 +76,7 @@ source $VIMRUNTIME/delmenu.vim
 source $VIMRUNTIME/menu.vim
 
 " 可以在buffer的任何地方使用鼠标（类似office中在工作区双击鼠标定位）
-set mouse=a
+"set mouse=a
 
 " Turn on the WiLd menu
 set wildmenu
