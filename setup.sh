@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "安装将花费一定时间，请耐心等待直到安装完成^_^"
 if which apt-get >/dev/null; then
-	sudo apt-get install -y vim vim-gnome ctags xclip astyle python-setuptools python-dev git cscope
+	sudo apt-get install -y vim vim-gnome ctags xclip astyle python-setuptools python-dev git cscope build-essential cmake
 elif which yum >/dev/null; then
 	sudo yum install -y gcc vim git ctags xclip astyle python-setuptools python-devel cscope
 fi
@@ -41,6 +41,11 @@ echo "安装完毕将自动退出" >> tmp
 echo "请耐心等待" >> tmp
 vim tmp -c "PluginInstall" -c "q" -c "q"
 rm tmp
+
+echo "now install YouCompleteMe"
+cd ~/.vim_runtime/bundle/YouCompleteMe
+./install.py --clang-completer
+
 echo "安装完成"
 
 
