@@ -1,16 +1,14 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Important:
-"       This requries that you install https://github.com/jiangty08/vim !
+" Maintainer:
+"       Jiangty08
+"
+" Version:
+"       1.0 - 30/08/16 15:43:36
+"
+" Sections:
+"    -> Vundle Plugin
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-
-""""""""""""""""""""""""""""""
-" => Load pathogen paths
-""""""""""""""""""""""""""""""
-"call pathogen#infect('~/.vim_runtime/bundle/{}')
-"call pathogen#infect('~/.vim_runtime/sources_non_forked/{}')
-"call pathogen#helptags()
 
 """"""""""""""""""""""""""""""
 " => Vundle Plugin
@@ -26,15 +24,26 @@ call vundle#begin('~/.vim_runtime/bundle')
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'L9'
-Plugin 'FuzzyFinder'
+
+" search file
+Plugin 'kien/ctrlp.vim'
+" search functions in file
+Plugin 'tacahiroy/ctrlp-funky'
+
+" search text
+
+" align text
+Plugin 'godlygeek/tabular'
+
+" preview markdown
+Plugin 'suan/vim-instant-markdown'
+
+" display dir menu
 Plugin 'The-NERD-tree'
 "Plugin 'cscope.vim'       cscope_macros.vim is better for csadd
 Plugin 'cscope_macros.vim'
 Plugin 'majutsushi/tagbar'
-Plugin 'kien/ctrlp.vim'
-"Plugin 'easymotion/vim-easymotion'
-Plugin 'tpope/vim-fugitive'
+
 Plugin 'Auto-Pairs'
 Plugin 'Valloric/YouCompleteMe'
 " Track the engine.
@@ -43,71 +52,58 @@ Plugin 'SirVer/ultisnips'
 " Snippets are separated from the engine. Add this if you want them:
 Plugin 'honza/vim-snippets'
 
+" edit
+Plugin 'tpope/vim-surround'
+Plugin 'scrooloose/nerdcommenter'
+
+" for switch zh en input methods
 Plugin 'fcitx.vim'
 
-"" The following are examples of different formats supported.
-"" Keep Plugin commands between vundle#begin/end.
-"" plugin on GitHub repo
-"Plugin 'tpope/vim-fugitive'
-"" plugin from http://vim-scripts.org/vim/scripts.html
-"Plugin 'L9'
-"" Git plugin not hosted on GitHub
-"Plugin 'git://git.wincent.com/command-t.git'
-"" git repos on your local machine (i.e. when working on your own plugin)
-"Plugin 'file:///home/gmarik/path/to/plugin'
-"" The sparkup vim script is in a subdirectory of this repo called vim.
-"" Pass the path to set the runtimepath properly.
-"Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-"" Install L9 and avoid a Naming conflict if you've already installed a
-"" different version somewhere else.
-"Plugin 'ascenator/L9', {'name': 'newL9'}
+" status line
+Plugin 'vim-airline/vim-airline'
+
+" a git wrapper for vim
+Plugin 'tpope/vim-fugitive'
+
+" library for other plugins
+Plugin 'L9'
+
+"Plugin 'easymotion/vim-easymotion'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
 
 """"""""""""""""""""""""""""""
-" => bufExplorer plugin
-""""""""""""""""""""""""""""""
-let g:bufExplorerDefaultHelp=0
-let g:bufExplorerShowRelativePath=1
-let g:bufExplorerFindActive=1
-let g:bufExplorerSortBy='name'
-map <leader>o :BufExplorer<cr>
-
-
-""""""""""""""""""""""""""""""
-" => YankStack
-""""""""""""""""""""""""""""""
-nmap <c-p> <Plug>yankstack_substitute_older_paste
-nmap <c-P> <Plug>yankstack_substitute_newer_paste
-
-
-""""""""""""""""""""""""""""""
 " => CTRL-P
 """"""""""""""""""""""""""""""
+" search file/MRU/buffer
+
 let g:ctrlp_working_path_mode = 0
 
 "let g:ctrlp_map = '<c-f>'
-map <leader>j :CtrlP<cr>
-map <c-b> :CtrlPBuffer<cr>
 
 let g:ctrlp_max_depth = 10
 let g:ctrlp_max_files=0
 let g:ctrlp_max_height = 20
 let g:ctrlp_show_hidden = 1
 let g:ctrlp_custom_ignore = 'node_modules\|^\.DS_Store\|^\.git\|^\.coffee'
+
+" ctrl+j/k: move
+" ctrl+x:   open in hirizontal
+" ctrl+v:   open in vertical
+" ctrl+t:   open in tab
+
+
+""""""""""""""""""""""""""""""
+" => CTRLP-Funky
+""""""""""""""""""""""""""""""
+" list all functions in current file
+nnoremap <Leader>fu :CtrlPFunky<Cr>
+" search the function list with a word under cursor
+nnoremap <Leader>fU :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
 
 
 """"""""""""""""""""""""""""""
@@ -124,71 +120,27 @@ let g:NERDTreeWinPos = "right"
 let NERDTreeShowHidden=0
 let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 let g:NERDTreeWinSize=35
-map <leader>nn :NERDTreeToggle<cr>
-map <leader>nb :NERDTreeFromBookmark
-map <leader>nf :NERDTreeFind<cr>
-"当打开vim且没有文件时自动打开NERDTree
+nnoremap <leader>nn :NERDTreeToggle<cr>
+nnoremap <leader>nb :NERDTreeFromBookmark
+nnoremap <leader>nf :NERDTreeFind<cr>
+" 当打开vim且没有文件时自动打开NERDTree
 autocmd vimenter * if !argc() | NERDTree | endif
 " 只剩 NERDTree时自动关闭
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => tagbar (show tags)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <leader>tb :TagbarToggle<CR>
+let g:tagbar_right = 1
+let g:tagbar_width = 45
+"autocmd VimEnter * nested :call tagbar#autoopen(1)
+autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx call tagbar#autoopen()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vim-multiple-cursors
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:multi_cursor_next_key="\<C-s>"
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => surround.vim config
-" Annotate strings with gettext http://amix.dk/blog/post/19678
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-vmap Si S(i_<esc>f)
-au FileType mako vmap Si S"i${ _(<esc>2f"a) }<esc>
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => lightline
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:lightline = {
-      \ 'colorscheme': 'wombat',
-      \ }
-
-let g:lightline = {
-      \ 'colorscheme': 'wombat',
-      \ 'active': {
-      \   'left': [ ['mode', 'paste'],
-      \             ['fugitive', 'readonly', 'filename', 'modified'] ],
-      \   'right': [ [ 'lineinfo' ], ['percent'] ]
-      \ },
-      \ 'component': {
-      \   'readonly': '%{&filetype=="help"?"":&readonly?"🔒":""}',
-      \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
-      \   'fugitive': '%{exists("*fugitive#head")?fugitive#head():""}'
-      \ },
-      \ 'component_visible_condition': {
-      \   'readonly': '(&filetype!="help"&& &readonly)',
-      \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
-      \   'fugitive': '(exists("*fugitive#head") && ""!=fugitive#head())'
-      \ },
-      \ 'separator': { 'left': ' ', 'right': ' ' },
-      \ 'subseparator': { 'left': ' ', 'right': ' ' }
-      \ }
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Vimroom
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:goyo_width=100
-let g:goyo_margin_top = 2
-let g:goyo_margin_bottom = 2
-nnoremap <silent> <leader>z :Goyo<cr>
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Vim-go
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:go_fmt_command = "goimports"
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Syntastic (syntax checker)
@@ -205,28 +157,13 @@ let g:syntastic_go_checkers = ['go', 'golint', 'errcheck']
 
 " Custom CoffeeScript SyntasticCheck
 func! SyntasticCheckCoffeescript()
-    let l:filename = substitute(expand("%:p"), '\(\w\+\)\.coffee', '.coffee.\1.js', '')
-    execute "tabedit " . l:filename
-    execute "SyntasticCheck"
-    execute "Errors"
+	let l:filename = substitute(expand("%:p"), '\(\w\+\)\.coffee', '.coffee.\1.js', '')
+	execute "tabedit " . l:filename
+	execute "SyntasticCheck"
+	execute "Errors"
 endfunc
 nnoremap <silent> <leader>c :call SyntasticCheckCoffeescript()<cr>
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Git gutter (Git diff)
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:gitgutter_enabled=0
-nnoremap <silent> <leader>d :GitGutterToggle<cr>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => tagbar (show tags)
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <silent> <F8> :TagbarToggle<CR>                                                                        
-let g:tagbar_right = 1
-let g:tagbar_width = 45
-"autocmd VimEnter * nested :call tagbar#autoopen(1)
-autocmd BufReadPost *.cpp,*.c,*.h,*.hpp,*.cc,*.cxx call tagbar#autoopen()
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -251,26 +188,26 @@ nnoremap  <leader>fi :call cscope#find('i', expand('<cword>'))<CR>
 
 " auto load ctag and cscope from parent dirs recursively
 function! AutoLoadCTagsAndCScope()
-    let max = 8
-    let dir = './'
-    let i = 0
-    let break = 0
-    while isdirectory(dir) && i < max
-        if filereadable(dir . 'cscope.out') 
-            execute 'cs add ' . dir . 'cscope.out'
-            let break = 1
-        endif
-        if filereadable(dir . 'tags')
-            execute 'set tags =' . dir . 'tags'
-            let break = 1
-        endif
-        if break == 1
-            execute 'lcd ' . dir
-            break
-        endif
-        let dir = dir . '../'
-        let i = i + 1
-    endwhile
+	let max = 8
+	let dir = './'
+	let i = 0
+	let break = 0
+	while isdirectory(dir) && i < max
+		if filereadable(dir . 'cscope.out')
+			execute 'cs add ' . dir . 'cscope.out'
+			let break = 1
+		endif
+		if filereadable(dir . 'tags')
+			execute 'set tags =' . dir . 'tags'
+			let break = 1
+		endif
+		if break == 1
+			execute 'lcd ' . dir
+			break
+		endif
+		let dir = dir . '../'
+		let i = i + 1
+	endwhile
 endfunction
 "this is not work, but cscope.vim will auto create and connect cscope
 nmap <F7> :call AutoLoadCTagsAndCScope()<CR>
@@ -300,3 +237,32 @@ let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
 let g:UltiSnipsSnippetDirectories = ['~/.vim_runtime/ultisnips-snippets']
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => nerdcommenter
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Comment functions so powerful
+
+" default mappings
+" [count]<leader>c<space> |NERDComToggleComment|
+
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+
+" Set a language to use its alternate delimiters by default
+let g:NERDAltDelims_java = 1
+
+" Add your own custom formats or override the defaults
+let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
+
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
+
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1

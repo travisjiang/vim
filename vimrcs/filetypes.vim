@@ -3,6 +3,11 @@
 """"""""""""""""""""""""""""""
 autocmd BufRead,BufNewFile *.{md,mdown,mkd,mkdn,markdown,mdwn}   set filetype=mkd   "markdown配置"
 autocmd BufRead,BufNewFile *.{py}   set filetype=python "python"
+autocmd BufRead,BufNewFile *.{sh}   set filetype=python "sh"
+
+" Enable filetype plugins
+filetype plugin on
+filetype indent on
 
 """"""""""""""""""""""""""""""
 " => File Header Config
@@ -146,18 +151,6 @@ function! JavaScriptFold()
     endfunction
     setl foldtext=FoldText()
 endfunction
-
-
-""""""""""""""""""""""""""""""
-" => CoffeeScript section
-"""""""""""""""""""""""""""""""
-function! CoffeeScriptFold()
-    setl foldmethod=indent
-    setl foldlevelstart=1
-endfunction
-au FileType coffee call CoffeeScriptFold()
-
-au FileType gitcommit call setpos('.', [0, 1, 1, 0])
 
 
 """"""""""""""""""""""""""""""

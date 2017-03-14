@@ -6,6 +6,10 @@ elif which yum >/dev/null; then
 	sudo yum install -y gcc vim git ctags xclip astyle python-setuptools python-devel cscope
 fi
 
+#  for vim-instant-markdown
+sudo npm -g install instant-markdown-d
+apt-get install xdg-utils curl nodejs-legacy
+
 ##Add HomeBrew support on  Mac OS
 if which brew >/dev/null;then
     echo "You are using HomeBrew tool"
