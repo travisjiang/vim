@@ -68,6 +68,12 @@ Plugin 'tpope/vim-fugitive'
 " library for other plugins
 Plugin 'L9'
 
+" formatting
+Plugin 'tell-k/vim-autopep8'
+
+" colortheme
+Plugin 'tomasr/molokai'
+
 "Plugin 'easymotion/vim-easymotion'
 
 " All of your Plugins must be added before the following line
@@ -266,3 +272,14 @@ let g:NERDCommentEmptyLines = 1
 
 " Enable trimming of trailing whitespace when uncommenting
 let g:NERDTrimTrailingWhitespace = 1
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => vim-autopep8
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+autocmd FileType python noremap <buffer> <F8> :call Autopep8()<CR>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => colorscheme
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+colorscheme molokai
