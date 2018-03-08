@@ -4,3 +4,6 @@
 
 `curl -sSL https://raw.github.com/jiangty08/vim/master/setup.sh | sh`
 
+or for mac user, do:
+`curl -sSL https://raw.github.com/jiangty08/vim/master/setup_mac.sh | sh`
+
